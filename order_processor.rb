@@ -1,3 +1,5 @@
+require './order'
+
 class OrderProcessor
 
   attr_accessor :order
