@@ -17,18 +17,12 @@ class Order
 
   def total
     ecumulated_total = sum(@items.map(&:price))
-    ecumulated_total += calc_surcharge
+    ecumulated_total += sum(@items.map(&:surcharge))
     ecumulated_total -= calc_discounts if @bonus_card
     ecumulated_total
   end
 
   private
-
-  # TODO: This class should not know what items have a surcharge and how much it is.
-  def calc_surcharge
-    surcharge_items = @items.select { |i| i.name == 'Cigarettes' }
-    sum(surcharge_items.map { 50 })
-  end
 
   # TODO: This class should not know about discounts.
   def calc_discounts
