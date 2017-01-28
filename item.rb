@@ -25,10 +25,6 @@ class Item
   end
 
   def surcharge
-    if name == 'Cigarettes'
-      @surcharge
-    else
-      0
-    end
+    @surcharge
   end
 end
