@@ -1,9 +1,14 @@
 class Order
 
-  attr_accessor :items
+  attr_accessor :items, :bonus_card
 
   def initialize
     @items = []
+    @bonus_card = false
+  end
+
+  def add_bonus_card
+    @bonus_card = true
   end
 
   def add_item(item)
@@ -13,7 +18,8 @@ class Order
   def total
     ecumulated_total = sum(@items.map(&:price))
     ecumulated_total += calc_surcharge
-    ecumulated_total -= calc_discounts
+    ecumulated_total -= calc_discounts if @bonus_card
+    ecumulated_total
   end
 
   private

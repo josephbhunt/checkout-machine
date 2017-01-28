@@ -30,11 +30,13 @@ class OrderTest < Minitest::Test
 
   def test_total_returns_sum_of_discounted_salsa
     @order.items = [Item.create("Salsa")]
+    @order.add_bonus_card
     assert_equal 228, @order.total
   end
 
   def test_total_returns_sum_of_discounted_chips
     @order.items = 7.times.map { Item.create("Chips") }
+    @order.add_bonus_card
     assert_equal 615, @order.total
   end
 end
