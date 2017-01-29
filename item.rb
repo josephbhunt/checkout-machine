@@ -1,19 +1,8 @@
 class Item
 
-  attr_accessor :price, :name, :surcharge, :discounted
+  attr_accessor :price, :name, :sku, :surcharge, :discounted
 
-  ITEMS = [
-    {name: "Chips", price: 123, sku: 200},
-    {name: "Salsa", price: 456, sku: 100},
-    {name: "Wine", price: 1000, sku: 1000},
-    {name: "Cigarettes", price: 111, sku: 500, surcharge: 50}
-  ]
-
-  def self.create(item_name)
-    item_attributes = ITEMS.find { |i| i[:name] == item_name }
-    new(item_attributes)
-  end
-
+  # Surcharge should automatically be added based on something like item type (e.g. {type: :tobacco}).
   def initialize(attributes = {})
     defaults = { surcharge: 0 }
     attributes = defaults.merge(attributes)

@@ -4,14 +4,14 @@ require_relative '../item'
 
 class OrderTest < Minitest::Test
   def setup
-    @order = Order.new
+    @order = Order.new(Cart.new)
   end
 
-  def test_add_item_adds_an_item_to_the_list
-    item = "item"
-    @order.add_item(item)
-    assert_equal 1, @order.items.count
-    assert_equal item, @order.items.first
+  def test_add_inventory_to_cart_by_sku_adds_an_inventory_item_to_the_cart
+    item = Inventory.create('Chips')
+    @order.add_inventory_to_cart_by_sku(item.sku)
+    assert_equal 1, @order.cart.total_items
+    assert_equal item.name, @order.cart.items.first.name
   end
 
   def test_total_returns_zero_when_no_items
@@ -19,23 +19,25 @@ class OrderTest < Minitest::Test
   end
 
   def test_total_returns_the_sum_of_all_item_prices
-    @order.items = [Item.create("Chips"), Item.create("Chips")]
+    @order.cart = Cart.new(
+      [ Inventory.create("Chips"), Inventory.create("Chips") ]
+    )
     assert_equal 246, @order.total
   end
 
   def test_total_returns_the_sum_of_items_with_surcharge
-    @order.items = [Item.create("Cigarettes")]
+    @order.cart = Cart.new([Inventory.create("Cigarettes")])
     assert_equal 161, @order.total
   end
 
   def test_total_returns_sum_of_discounted_salsa
-    @order.items = [Item.create("Salsa")]
+    @order.cart = Cart.new([Inventory.create("Salsa")])
     @order.add_bonus_card
     assert_equal 228, @order.total
   end
 
   def test_total_returns_sum_of_discounted_chips
-    @order.items = 7.times.map { Item.create("Chips") }
+    @order.cart = Cart.new(7.times.map { Inventory.create("Chips") })
     @order.add_bonus_card
     assert_equal 615, @order.total
   end
