@@ -1,8 +1,12 @@
+require './discountable'
+
 class Cart
+  include Discountable
   attr_accessor :items, :bonus_card
 
   def initialize(items = [])
-    @items = items
+    @items = []
+    items.each { |i| add_item(i) }
   end
 
   def add_item(item)
@@ -34,18 +38,6 @@ class Cart
   end
 
   private
-
-  def chip_discounts
-    discounted = @items.select { |i| i.name == 'Chips' }
-    groups_of_three_chips = discounted.count / 3
-    Inventory.create('Chips').price * groups_of_three_chips
-  end
-
-  def salsa_discounts
-    discounted = @items.select { |i| i.name == 'Salsa'}
-    discounts = discounted.map { |d| d.price / 2 }
-    sum(discounts)
-  end
 
   def sum(collection)
     collection.inject(0) { |sum, i| sum + i }

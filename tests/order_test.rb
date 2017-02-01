@@ -56,4 +56,16 @@ class OrderTest < Minitest::Test
     @online_order.add_inventory_to_cart_by_sku(item.sku)
     assert_equal 1, @online_order.cart.total_items
   end
+
+  def test_online_order_total_returns_sum_of_discounded_chips
+    @online_order.cart = OnlineCart.new(7.times.map { Inventory.create("Chips") })
+    @online_order.add_bonus_card
+    assert_equal 615, @online_order.total
+  end
+
+  def test_online_order_total_returns_sum_of_discounted_salsa
+    @online_order.cart = OnlineCart.new([Inventory.create("Salsa")])
+    @online_order.add_bonus_card
+    assert_equal 228, @online_order.total
+  end
 end

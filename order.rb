@@ -1,3 +1,5 @@
+require './inventory'
+
 class Order
 
   attr_accessor :cart, :bonus_card
