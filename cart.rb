@@ -1,7 +1,4 @@
-require './discountable'
-
 class Cart
-  include Discountable
   attr_accessor :items, :bonus_card
 
   def initialize(items = [])
@@ -10,7 +7,7 @@ class Cart
   end
 
   def add_item(item)
-    @items << item
+    raise NotImplementedError
   end
 
   def price_total
