@@ -1,10 +1,13 @@
 require 'minitest/autorun'
 require_relative '../order'
 require_relative '../item'
+require_relative '../cart'
+require_relative '../online_cart'
 
 class OrderTest < Minitest::Test
   def setup
     @order = Order.new(Cart.new)
+    @online_order = Order.new(OnlineCart.new)
   end
 
   def test_add_inventory_to_cart_by_sku_adds_an_inventory_item_to_the_cart
@@ -40,5 +43,17 @@ class OrderTest < Minitest::Test
     @order.cart = Cart.new(7.times.map { Inventory.create("Chips") })
     @order.add_bonus_card
     assert_equal 615, @order.total
+  end
+
+  def test_online_order_cannot_add_wine
+    item = Inventory.create('Wine')
+    @online_order.add_inventory_to_cart_by_sku(item.sku)
+    assert_equal 0, @online_order.cart.total_items
+  end
+
+  def test_online_order_can_add_chips
+    item = Inventory.create('Chips')
+    @online_order.add_inventory_to_cart_by_sku(item.sku)
+    assert_equal 1, @online_order.cart.total_items
   end
 end
