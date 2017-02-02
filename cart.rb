@@ -18,16 +18,8 @@ class Cart
     sum(@items.map(&:surcharge))
   end
 
-  def discount_total
-    total_discounts = salsa_discounts
-    total_discounts += chip_discounts
-  end
-
-  def total(apply_discounts)
-    ecumulated_total = price_total
-    ecumulated_total += surcharge_total
-    ecumulated_total -= discount_total if apply_discounts
-    ecumulated_total
+  def total
+    raise NotImplementedError
   end
 
   def total_items
